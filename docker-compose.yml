@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  video-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - VIDEO_API_HOST=0.0.0.0
+      - VIDEO_API_PORT=8000
+      - VIDEO_API_DEBUG=false
+      - VIDEO_API_LOG_LEVEL=INFO
+    volumes:
+      - ./logs:/app/logs
+      - ./temp:/app/temp
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
